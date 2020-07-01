@@ -8,7 +8,7 @@ import {
 } from "typeorm"
 
 import { States } from "../../@common/enums/states.enum"
-import { Profile } from "./profile.entity"
+import { User } from "./user.entity"
 
 @Entity('languages')
 export class Language {
@@ -32,8 +32,8 @@ export class Language {
     updateAd: Date
 
     @OneToMany(
-        type => Profile,
-        profile => profile.language,
+        type => User,
+        user => user.language,
     )
-    profiles: Profile[]
+    users: User[]
 }

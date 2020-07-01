@@ -5,12 +5,10 @@ import {
     CreateDateColumn, 
     UpdateDateColumn, 
     OneToOne, 
-    ManyToOne,
     JoinColumn
 } from "typeorm"
 
 import { User } from "./user.entity"
-import { Language } from "./language.entity"
 import { Photo } from "./photo.entity"
 import { Genders } from "../../@common/enums/genders.enum"
 
@@ -46,13 +44,6 @@ export class Profile {
         user => user.profile,
     )
     user: User
-
-    @ManyToOne(
-        type => Language,
-        language => language.profiles,
-    )
-    @JoinColumn({ name: 'fk_language' })
-    language: Language
 
     @OneToOne(
         type => Photo,

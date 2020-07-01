@@ -12,6 +12,7 @@ import { GetRoleService } from "../../role/services/get.role.service"
 import { SendgridService, Templates } from "../../../@common/utils/sendgrid.service"
 import { SignInService } from "./signin.service"
 import { Profile } from "../../../entities/example/profile.entity"
+import { GetLanguageService } from "../../language/services/get.language.service"
 
 @Injectable()
 export class SignUpService {
@@ -22,6 +23,7 @@ export class SignUpService {
         private readonly userRolesRepository: Repository<UserRoles>,
         private readonly bcryptService: BcryptService,
         private readonly getRoleService: GetRoleService,
+        private readonly getLanguageService: GetLanguageService,
         private readonly sendgridService: SendgridService,
         private readonly signinService: SignInService
     ) { }
@@ -43,10 +45,8 @@ export class SignUpService {
                 password: this.bcryptService.encryption(password)
             })
         } catch (error) {
-            return error
+            return { error: 'CONSTRAINT EMAIL' }
         }
-
-        
 
         if(roles){
             roles.forEach(async role => {
@@ -57,6 +57,8 @@ export class SignUpService {
             const defaultRole = await this.getRoleService.getRole({ name: Roles.GENERAL }) 
             await this.userRolesRepository.save({ user, role: defaultRole })
         }
+
+        user.language = await this.getLanguageService.getLanguage({ name: 'SPANISH' })
 
         const profile = new Profile()
         user.profile = profile

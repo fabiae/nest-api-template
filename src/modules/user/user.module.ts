@@ -13,12 +13,15 @@ import { PermissionModule } from '../permission/permission.module'
 import { AddRoleService } from './services/add.role.service'
 import { RemoveRoleService } from './services/remove.role.service'
 import { RoleModule } from '../role/role.module'
+import { ChangeLanguageService } from './services/change.language.service'
+import { LanguageModule } from '../language/language.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, UserRoles, UserPermissions]),
     PermissionModule,
-    RoleModule
+    RoleModule,
+    LanguageModule
   ],
   controllers: [UserController],
   providers: [
@@ -27,7 +30,8 @@ import { RoleModule } from '../role/role.module'
     AddPermissionService,
     RemovePermissionService,
     AddRoleService,
-    RemoveRoleService
+    RemoveRoleService,
+    ChangeLanguageService
   ]
 })
 export class UserModule {}

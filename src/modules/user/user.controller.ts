@@ -23,6 +23,8 @@ import { AddRoleService } from './services/add.role.service'
 import { RemoveRoleService } from './services/remove.role.service'
 import { RemovePermissionService } from './services/remove.permission.service'
 import { UserPermission } from './dto/user-permission.dto'
+import { ChangeLanguage } from './dto/change-language.dto'
+import { ChangeLanguageService } from './services/change.language.service'
 
 @Controller('user')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
@@ -33,13 +35,19 @@ export class UserController {
         private readonly addPermissionService: AddPermissionService,
         private readonly addRoleService: AddRoleService,
         private readonly removeRoleService: RemoveRoleService,
-        private readonly removePermissionService: RemovePermissionService
+        private readonly removePermissionService: RemovePermissionService,
+        private readonly changeLanguageService: ChangeLanguageService
     ){}
 
     @Get()
     @RolesDecorator(Roles.ADMIN)
     getUsers(@Query("state") state: States){
         return this.getUserService.getAllUsers(state)
+    }
+
+    @Put('/change-language')
+    changeLanguage(@Req() req, @Body() body: ChangeLanguage){
+        return this.changeLanguageService.changeLanguage(req.user.id, body)
     }
 
     @Get('/permissions')
